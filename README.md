@@ -9,10 +9,12 @@ Create a directory named "WGS" in your home directory and navigate to it. This i
 mkdir WGS
 ```
 
-Inside WGS, make a directory to store data and create soft links to the test data. 
+Inside WGS, make a directory `data` to store data. Download the data from a repository using `wget` program. 
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/data"
-ln -s "path/to/reads/*.fq" "/data"
+cd data
+wget https://github.com/AlfredUg/WGS_Assembly/raw/master/reads_1.fq
+wget https://github.com/AlfredUg/WGS_Assembly/raw/master/reads_2.fq
 ```
 
 To confirm that the links have been successfully created, list the contents of the folder using the `ls` command. If the data is compressed (i.e .gz files), uncompress them using `gunzip *`
