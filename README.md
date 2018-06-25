@@ -42,18 +42,18 @@ You may consider looking at the trimmed reads using `fastqc` to check the improv
 
 ##  **Reference based assembly** 
 
-Now that we have quality reads, we can proceed to map the reads onto the reference genome. Here, we use reference `bowtie2`. Make a directory `genome` to store the reference genome.  Create a soft-link of the genome to this directory.
+Now that we have quality reads, we can proceed to map the reads onto the reference genome.Make a directory `reference` to store the reference genome.  
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/reference"
 cd reference
 wget https://github.com/AlfredUg/WGS_Assembly/raw/master/lambda_virus.fa
 ```
 
-Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignement and perform the assembly. This proceeds in two steps, first is to create align  the reads on the reference and then summarising the alignment in a SAM file.
+Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignment and perform the assembly. This proceeds in two steps, first is to create align  the reads on the reference and then summarising the alignment in a SAM file.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir alignment
 cd alignment
-bwa aln ../reference/lambda_virus.fa ../data/reads_1.fq > reads_1.sai
+bwa aln ../lambda_virus.fa ../data/reads_1.fq > reads_1.sai
 bwa aln ../reference/lambda_virus.fa ../data/reads_2.fq > reads_2.sai
 bwa sampe ../reference/lambda_virus.fa reads_1.sai reads_2.sai ../data/reads_1.fq ../data/reads_2.fq > reads12_alignment.sam
 ```
