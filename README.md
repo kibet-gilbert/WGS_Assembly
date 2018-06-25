@@ -35,7 +35,7 @@ mkdir "$HOME/WGS/trimmed"
 trim_galore -q 25 -l 75 --dont_gzip --clip_R1 16 --clip_R2 16 --paired read_R1.fq read_R2.fq -o trimmed
 ```
 If all goes well, trimmed reads will be available in trimmed.
-Below is the details of trim.sh script, it iteratively trims all fastq files in the `data` directory. You may consider looking at the trimmed reads using `fastqc` to check the improvement made by `trim_galore`.
+You may consider looking at the trimmed reads using `fastqc` to check the improvement made by `trim_galore`.
 
 ##  **Reference based assembly** 
 
@@ -46,7 +46,7 @@ cd reference
 wget https://github.com/AlfredUg/WGS_Assembly/raw/master/lambda_virus.fa
 ```
 
-Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignement and perform the assembly. This proceeds in two steps, first is to create align  the reads on the reference and then summarising the alignment in a SAm file.
+Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignement and perform the assembly. This proceeds in two steps, first is to create align  the reads on the reference and then summarising the alignment in a SAM file.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir alignment
 cd alignment
@@ -93,6 +93,10 @@ velvetg denovo
 
 To evaluate and assess the assembly, we use `quast`. This will provide a summary of the metagenome assembly, including but not limited to N50, N75, L50, L75, GC percentage, number of contigs with size greater than 500bp (Only assesses the consensus).
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-
+./quast.py contigs_1.fasta  -R test_data/reference.fasta.gz \
+        -G test_data/genes.txt \
+        -O test_data/operons.txt \
+        -1 test_data/reads1.fastq.gz -2 test_data/reads2.fastq.gz \
+        -o quast_test_output
 ```
 ## **References**
