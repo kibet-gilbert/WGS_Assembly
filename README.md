@@ -57,7 +57,7 @@ Create a directory `alignment` that will contain assembly results. Here we use t
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir alignment
 cd alignment
-bwa aln ../lambda_virus.fa ../data/reads_1.fq > reads_1.sai
+bwa aln ../reference/lambda_virus.fa ../data/reads_1.fq > reads_1.sai
 bwa aln ../reference/lambda_virus.fa ../data/reads_2.fq > reads_2.sai
 bwa sampe ../reference/lambda_virus.fa reads_1.sai reads_2.sai ../data/reads_1.fq ../data/reads_2.fq > reads12_alignment.sam
 ```
