@@ -30,14 +30,14 @@ Once this is done, navigate to `qcresults` and download the ".html" files to loc
 We use `trim_galore` for quality and adapter trimming. Depending on the qc results, it would be necessary to change some parameters used here accordingly. This script clips off the first 16 bases of the reads from the 5' end. In addition, it removes bases with phred quality less than 25 on the 3' end of the reads. We need to store quality trimmed reads, as such, in WGS directory, make a sub directory `trimmed`.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/trimmed"
-trim_galore -q 25 -l 75 --dont_gzip --clip_R1 16 --clip_R2 16 --paired {bname}_R1.fastq {bname}_R2.fastq -o $trimdir
+trim_galore -q 25 -l 75 --dont_gzip --clip_R1 16 --clip_R2 16 --paired read_R1.fastq read_R2.fastq -o trimmed
 ```
 If all goes well, trimmed reads will be available in trimmed.
 Below is the details of trim.sh script, it iteratively trims all fastq files in the `data` directory. You may consider looking at the trimmed reads using `fastqc` to check the improvement made by `trim_galore`.
 
 ##  **Reference based assembly** 
 
-Now that we have quality reads, we can proceed to map the reads onto the reference genome. Here, we use reference `bowtie2` [@bowtie2]. Make a directory `genome` to store the reference genome.  Create a soft-link of the genome to this directory.
+Now that we have quality reads, we can proceed to map the reads onto the reference genome. Here, we use reference `bowtie2`. Make a directory `genome` to store the reference genome.  Create a soft-link of the genome to this directory.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/reference"
 ln -s "path/to/reference.fa" "/data"
@@ -61,7 +61,7 @@ Convert sam to bam file
 samtools view -bS alignment.sam > alignmnet.bam
 ```
 
-Sort the bam file
+Sort the bam file such that it can easily be indexed.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 samtools sort alignment.bam -o alignmnet_sort.bam
 ```
@@ -82,7 +82,7 @@ Download thealignment file and open it in your favorite editor. See what each of
 
 Visualise the alignment using IGV.
 
-##  **De novo assembly**{#denovo}
+##  **De novo assembly**
 Here we use `velvet` to assemble reads to obtain consesus contigs. This proceedes in two stages, first is to create the hash index (using velveth) and then the assembly (velvetg).
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/denovo"
