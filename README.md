@@ -4,7 +4,10 @@ This is a follow up on the series of bioinformatics training sessions for the EA
 NOTE: It may  be necessary to make slight changes along the way.
 
 ## **Getting started**
-Create a directory named "WGS" in your home directory and navigate to it. This is where the analysis will be carried out. As we go on, we shall be creating sub-directories accordingly to ensure that intermediate outputs can be refered to easily whenever needed for downstream analyses. 
+
+We need to load the programs we intend to use way before hand.
+
+Once that is done, create a directory named "WGS" in your home directory and navigate to it. This is where the analysis will be carried out. As we go on, we shall be creating sub-directories accordingly to ensure that intermediate outputs can be refered to easily whenever needed for downstream analyses. 
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir WGS
 ```
@@ -93,10 +96,6 @@ velvetg denovo
 
 To evaluate and assess the assembly, we use `quast`. This will provide a summary of the metagenome assembly, including but not limited to N50, N75, L50, L75, GC percentage, number of contigs with size greater than 500bp (Only assesses the consensus).
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-./quast.py contigs_1.fasta  -R test_data/reference.fasta.gz \
-        -G test_data/genes.txt \
-        -O test_data/operons.txt \
-        -1 test_data/reads1.fastq.gz -2 test_data/reads2.fastq.gz \
-        -o quast_test_output
+./quast.py contigs_1.fasta  -R reference.fa -1 reads1.fq -2 test_data/reads2.fq -o quast_output
 ```
 ## **References**
