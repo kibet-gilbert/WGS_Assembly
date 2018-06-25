@@ -46,7 +46,7 @@ ln -s "path/to/reference.fa" "/data"
 Create a directory that will contain assembly results.
 
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
- mkdir "HOME/WGS/alignment" 
+mkdir "HOME/WGS/alignment" 
 bowtie2-build -f "path/to/reference" "path/to/reference/basename"
 ```
 
