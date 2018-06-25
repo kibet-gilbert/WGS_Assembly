@@ -1,5 +1,5 @@
 ## **Introduction**
-This is a follow up on the series of bioinformatics training sessions for the EAST African Network for Bioinformatics Trainin (EANBiT) held at KEMRI wellcome Trust, Kilifi Campus. This session focuses on the main procedure of  WGS reference based and de novo assembly.
+This is a follow up on the series of bioinformatics training sessions for the EAST African Network for Bioinformatics Training (EANBiT) held at KEMRI wellcome Trust, Kilifi Campus. This session focuses on the main procedure of  WGS (whole genome sequencing) reference based and de novo assembly.
 
 NOTE: It may  be necessary to make slight changes along the way.
 
