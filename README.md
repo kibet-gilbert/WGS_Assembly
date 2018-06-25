@@ -20,7 +20,7 @@ wget https://github.com/AlfredUg/WGS_Assembly/raw/master/reads_2.fq
 To confirm that the links have been successfully created, list the contents of the folder using the `ls` command. If the data is compressed (i.e .gz files), uncompress them using `gunzip *`
 
 ## **Quality control check**
-Here we use `fastqc` [@fastqc], it is necessary that we store quality control files for easy reference. In WGS, create a sub-directory qcresults, this is where the fastqc results will be stored.
+Here we use `fastqc`, it is necessary that we store quality control files for easy reference. In WGS, create a sub-directory qcresults, this is where the fastqc results will be stored.
 After that, do the quality checks;
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/qcresults"
@@ -32,7 +32,7 @@ Once this is done, navigate to `qcresults` and download the ".html" files to loc
 We use `trim_galore` for quality and adapter trimming. Depending on the qc results, it would be necessary to change some parameters used here accordingly. This script clips off the first 16 bases of the reads from the 5' end. In addition, it removes bases with phred quality less than 25 on the 3' end of the reads. We need to store quality trimmed reads, as such, in WGS directory, make a sub directory `trimmed`.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/trimmed"
-trim_galore -q 25 -l 75 --dont_gzip --clip_R1 16 --clip_R2 16 --paired read_R1.fastq read_R2.fastq -o trimmed
+trim_galore -q 25 -l 75 --dont_gzip --clip_R1 16 --clip_R2 16 --paired read_R1.fq read_R2.fq -o trimmed
 ```
 If all goes well, trimmed reads will be available in trimmed.
 Below is the details of trim.sh script, it iteratively trims all fastq files in the `data` directory. You may consider looking at the trimmed reads using `fastqc` to check the improvement made by `trim_galore`.
@@ -42,15 +42,33 @@ Below is the details of trim.sh script, it iteratively trims all fastq files in 
 Now that we have quality reads, we can proceed to map the reads onto the reference genome. Here, we use reference `bowtie2`. Make a directory `genome` to store the reference genome.  Create a soft-link of the genome to this directory.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/reference"
-ln -s "path/to/reference.fa" "/data"
+cd reference
+wget https://github.com/AlfredUg/WGS_Assembly/raw/master/lambda_virus.fa
 ```
+We choose to merge the forward and reverse reads into a single file.
 
-Create a directory that will contain assembly results.
+```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
+fq2fa --merge read_1.fq read_2.fq read_12.fa
+fa2fq reads_12.fa reads_12.fq 
+```
+Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignement and perform the assembly. This proceeds in two steps, 
+```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
+mkdir alignment
+cd alignment
+bwa aln ../reference/lambda_virus.fa ../data/reads_12.fq > alignment.sam
+```
 
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "HOME/WGS/alignment" 
-bowtie2-build -f "path/to/reference" "path/to/reference/basename"
+cd alignment
+bwa aln ../reference/lambda_virus.fa ../data/reads_12.fq > alignment.sam
 ```
+Use command `ls` to view the contents of reference directory.
+```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
+ls reference
+lambda_virus.1.bt2  lambda_virus.2.bt2  lambda_virus.3.bt2  lambda_virus.4.bt2  lambda_virus.fa  lambda_virus.rev.1.bt2  lambda_virus.rev.2.bt2
+```
+
 
 Map the reads onto the reference sequences. Look at the documentation of bowtie2 to understand and see if you make any changes.
 
