@@ -45,60 +45,41 @@ mkdir "$HOME/WGS/reference"
 cd reference
 wget https://github.com/AlfredUg/WGS_Assembly/raw/master/lambda_virus.fa
 ```
-We choose to merge the forward and reverse reads into a single file.
 
-```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-fq2fa --merge read_1.fq read_2.fq read_12.fa
-fa2fq reads_12.fa reads_12.fq 
-```
-Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignement and perform the assembly. This proceeds in two steps, 
+Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignement and perform the assembly. This proceeds in two steps, first is to create align  the reads on the reference and then summarising the alignment in a SAm file.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir alignment
 cd alignment
-bwa aln ../reference/lambda_virus.fa ../data/reads_12.fq > alignment.sam
+bwa aln ../reference/lambda_virus.fa ../data/reads_1.fq > reads_1.sai
+bwa aln ../reference/lambda_virus.fa ../data/reads_2.fq > reads_2.sai
+bwa sampe ../reference/lambda_virus.fa reads_1.sai reads_2.sai ../data/reads_1.fq ../data/reads_2.fq > reads12_alignment.sam
 ```
 
-```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-mkdir "HOME/WGS/alignment" 
-cd alignment
-bwa aln ../reference/lambda_virus.fa ../data/reads_12.fq > alignment.sam
-```
 Use command `ls` to view the contents of reference directory.
-```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-ls reference
-lambda_virus.1.bt2  lambda_virus.2.bt2  lambda_virus.3.bt2  lambda_virus.4.bt2  lambda_virus.fa  lambda_virus.rev.1.bt2  lambda_virus.rev.2.bt2
-```
-
-
-Map the reads onto the reference sequences. Look at the documentation of bowtie2 to understand and see if you make any changes.
-
-```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-bowtie2 -x path/to/reference -1 path/to/read1.fq -2 path/to/read2.fq -S path/to/alignmnet/alignment.sam >> path/to/alignment/log.txt
-```
 
 Convert sam to bam file
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-samtools view -bS alignment.sam > alignmnet.bam
+samtools view -bS reads12_alignment.sam > reads12_alignment.bam
 ```
 
 Sort the bam file such that it can easily be indexed.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-samtools sort alignment.bam -o alignmnet_sort.bam
+samtools sort reads12_alignment.bam -o reads12_alignment_sorted.bam
 ```
-Note: At this point, one can discard the sam file, since we already have a lighter version of it. If need be we can always convert back to a sam file.
+Note: At this point, one can discard the SAM file, since we already have a lighter version of it. If need be, we can always convert back to a SAM file.
 
 Create an index and compute stats for the alignment
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-samtools index alignmnet.bam
-samtools idxstats alignmnet.bam
+samtools index reads12_alignment_sorted.bam
+samtools idxstats reads12_alignment_sorted.bam
 ```
 
 One can choose to obtain only the mapped or unmapped reads from the entire alignment file.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
-samtools view -bh -F4 alignmnet.bam > $alignmnent_mapped.bam
+samtools view -bh -F4 reads12_alignment.bam > reads12_alignment.bam
 ```
 
-Download thealignment file and open it in your favorite editor. See what each of the columns contain and mean.
+Download the alignment file and open it in your favorite editor. See what each of the columns contain and mean.
 
 Visualise the alignment using IGV.
 
