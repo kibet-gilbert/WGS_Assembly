@@ -49,6 +49,10 @@ cd reference
 wget https://github.com/AlfredUg/WGS_Assembly/raw/master/lambda_virus.fa
 ```
 
+Index the reference 
+```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
+bwa index lambda_virus.fa
+```
 Create a directory `alignment` that will contain assembly results. Here we use the mapping tool known as bwa. Navigate to alignment and perform the assembly. This proceeds in two steps, first is to create align  the reads on the reference and then summarising the alignment in a SAM file.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir alignment
