@@ -16,8 +16,8 @@ Inside WGS, make a directory `data` to store data. Download the data from a repo
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/data"
 cd data
-wget https://github.com/AlfredUg/WGS_Assembly/raw/master/reads_1.fq
-wget https://github.com/AlfredUg/WGS_Assembly/raw/master/reads_2.fq
+wget https://raw.githubusercontent.com/AlfredUg/WGS_Assembly/master/reads_1.fq
+wget https://raw.githubusercontent.com/AlfredUg/WGS_Assembly/master/reads_2.fq
 ```
 
 To confirm that the links have been successfully created, list the contents of the folder using the `ls` command. If the data is compressed (i.e .gz files), uncompress them using `gunzip *`
@@ -46,7 +46,7 @@ Now that we have quality reads, we can proceed to map the reads onto the referen
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 mkdir "$HOME/WGS/reference"
 cd reference
-wget https://github.com/AlfredUg/WGS_Assembly/raw/master/lambda_virus.fa
+wget https://raw.githubusercontent.com/AlfredUg/WGS_Assembly/master/lambda_virus.fa
 ```
 
 Index the reference 
