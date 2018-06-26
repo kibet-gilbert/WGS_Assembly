@@ -92,9 +92,9 @@ sudo apt_get install igv
 igv
 ```
 select reference genome on the popup Gui: genome>load genome from file>(navigate to WGS/reference and select)lambda_virus.fa.
-select the file to be analysed too: 
+select the file to be analysed too: File>Load from File and navigate to > home/WGS/alignments and select> reads12_alignment_sorted.bam. By default is uses human genome as the refence.
 igv runs some analysis and outputs a gui with plots and graphs demonstrating various aspects of the genome.
-By default is uses human genome as the refence so
+
 Download the alignment file and open it in your favorite editor. See what each of the columns contain and mean.
 
 Visualise the alignment using IGV.
