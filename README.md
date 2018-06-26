@@ -64,11 +64,12 @@ bwa sampe ../reference/lambda_virus.fa reads_1.sai reads_2.sai ../data/reads_1.f
 
 Use command `ls` to view the contents of reference directory.
 
-Convert sam to bam file
+Convert sam to bam file (install samtools if you don't have them installed ye, use sudo command)
+
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
+sudo apt-get -y install samtools
 samtools view -bS reads12_alignment.sam > reads12_alignment.bam
 ```
-
 Sort the bam file such that it can easily be indexed.
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 samtools sort reads12_alignment.bam -o reads12_alignment_sorted.bam
@@ -85,7 +86,15 @@ One can choose to obtain only the mapped or unmapped reads from the entire align
 ```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
 samtools view -bh -F4 reads12_alignment.bam > reads12_alignment.bam
 ```
-
+Alternatively use IGV (Integrative Genomics Viewer) tool.
+```{r,eval=FALSE,error=FALSE,warning=FALSE,message=FALSE,echo=TRUE}
+sudo apt_get install igv
+igv
+```
+select reference genome on the popup Gui: genome>load genome from file>(navigate to WGS/reference and select)lambda_virus.fa.
+select the file to be analysed too: 
+igv runs some analysis and outputs a gui with plots and graphs demonstrating various aspects of the genome.
+By default is uses human genome as the refence so
 Download the alignment file and open it in your favorite editor. See what each of the columns contain and mean.
 
 Visualise the alignment using IGV.
